@@ -14,6 +14,13 @@ What I did so far:
 - Set up the project structure with separate directories for input videos, output videos, and utility functions
 - Updated the requirements.txt file to include necessary dependencies (ultralytics, roboflow, ipykernel, cv2)
 
+- Implemented a Tracker class in trackers/tracker.py:
+  - Initialized with a YOLO model and ByteTrack tracker
+  - Added methods for detecting objects in frames and getting object tracks
+  - Implemented functionality to save and load tracking results as stubs for faster processing
+- Updated main.py to use the Tracker class for object detection and tracking
+- Added support for tracking players, referees, and the ball separately
+
 Next steps:
 - Integrate the YOLOv8 model inference into the main script
 - Implement object tracking to follow players across frames
