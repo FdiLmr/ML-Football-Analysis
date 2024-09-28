@@ -2,3 +2,5 @@ ultralytics
 roboflow
 ipykernel
 cv2
+supervision
+pickle

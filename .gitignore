@@ -163,7 +163,9 @@ cython_debug/
 
 
 input_videos/
-output_videos/
-runs/
 runs/
 training/football-players-detection-1/football-players-detection-1/
+stubs/
+./input_videos
+./output_videos 
+output_videos/
