@@ -20,10 +20,13 @@ What I did so far:
   - Implemented functionality to save and load tracking results as stubs for faster processing
 - Updated main.py to use the Tracker class for object detection and tracking
 - Added support for tracking players, referees, and the ball separately
+- Created an __init__.py file in the trackers directory to make the Tracker class easily importable
 
-Next steps:
-- Integrate the YOLOv8 model inference into the main script
-- Implement object tracking to follow players across frames
-- Add visualization of bounding boxes and player IDs on the output video
-- Optimize the code for better performance on longer videos
-- Implement error handling and logging for better debugging
+- Enhanced the Tracker class with additional functionality:
+  - Added methods to draw annotations on video frames:
+    - draw_ellipse: Draws ellipses around detected objects
+    - draw_annotations: Applies annotations to all frames in the video
+  - Improved object classification by converting goalkeeper detections to player objects
+  - Updated main.py to utilize the new Tracker features
+
+More to come !
