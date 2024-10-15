@@ -29,4 +29,9 @@ What I did so far:
   - Improved object classification by converting goalkeeper detections to player objects
   - Updated main.py to utilize the new Tracker features
 
+- Added ball tracking with triangle
+- Added track_id number to players
+- Better handling of output videos name and folder
+- Some issues when applying to indoor dataset, will check later
+
 More to come !
