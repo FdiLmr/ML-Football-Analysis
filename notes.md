@@ -29,9 +29,15 @@ What I did so far:
   - Improved object classification by converting goalkeeper detections to player objects
   - Updated main.py to utilize the new Tracker features
 
-- Added ball tracking with triangle
+- Added ball tracking with triangle => unreliable so far, sometimes the cursor disappears => we'll fix this
 - Added track_id number to players
 - Better handling of output videos name and folder
-- Some issues when applying to indoor dataset, will check later
+- Some issues when applying to indoor dataset, will check later => prob fine tuned worked too well on professional dataset and therefore not working on indoor anymore
 
+- got cropped image of a player => segmentation with kmeans clustering => separate player and background
+- implemented that in the main function to assign team colors to players and ellipse
+- improved ball tracking with interpolation
+- added tracking of player in possession of the ball
+- added team ball control percentages
+- goalkeeper can be put in wrong team since they have different shirt color => will think of a solution later
 More to come !

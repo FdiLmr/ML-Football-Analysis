@@ -5,3 +5,4 @@ cv2
 supervision
 pickle
 time
+scikit-learn
