@@ -40,4 +40,16 @@ What I did so far:
 - added tracking of player in possession of the ball
 - added team ball control percentages
 - goalkeeper can be put in wrong team since they have different shirt color => will think of a solution later
+
+- camera movement : detect corners from the field (top & bottom for example) and extract these features => detect how much these features move => no need for indoor football since camera is fixed ?
+- read from stubs bc time consuming operations
+- problems : memory issue  " File "d:\ML Football Analysis\camera_movement_estimator\camera_movement_estimator.py", line 111, in draw_camera_movement
+    overlay = frame.copy()
+              ^^^^^^^^^^^^
+numpy.core._exceptions._ArrayMemoryError: Unable to allocate 5.93 MiB for an array with shape (1080, 1920, 3) and data type uint8 " 
+- solution : added a line to resize the frames to a smaller resolution (960x540) to reduce memory usage, memory error handling and scaled the text to the resized frame
+- other solution : free up RAM on my pc, takes about 50 sec to process for an input vid of 19 MB of duration 30 seconds (so far)
+
+
+
 More to come !
