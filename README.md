@@ -42,9 +42,7 @@ As this project continues to evolve, there are several potential enhancements an
 
 - **User Interface**: Building a user-friendly interface for users to upload videos, configure settings, and view results without needing to modify the code directly.
 
-- **Multi-Sport Support**: Expanding the functionality to support other sports, adapting the object detection and tracking algorithms to suit different contexts and requirements.
 
 - **Machine Learning Model Training**: Providing functionality for users to train their own models on custom datasets, allowing for tailored object detection based on specific needs.
 
 - **Cloud Deployment**: Exploring cloud-based solutions for processing and storing video data, enabling scalability and accessibility for users.
-
