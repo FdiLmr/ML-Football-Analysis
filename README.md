@@ -4,7 +4,8 @@ This repository contains a deep learning-based system for analyzing **indoor foo
 
 The project **tracks players, estimates ball possession, assigns team colors, calculates player speed & distance, and generates an annotated video** with all this information visualized.
 
-🎥 **Example Output Video:** [Click Here](examples/output.avi) 
+🎥 **Example Output:**
+[Watch the video](https://raw.githubusercontent.com/FdiLmr/ML-Football-Analysis/main/examples/output.avi)
 
 ---
 
@@ -65,12 +66,6 @@ This project implements a **video processing pipeline** that **detects, tracks, 
 
 ---
 
-## 📂 Example Output Video
-You can see an example of the model’s **annotated output video** here:  
-🎥 **[Example Output](examples/output.avi)** 
-
----
-
 ## 🛠 How to Run the Project
 ### 1️⃣ Clone this repository:
 ```bash
@@ -78,9 +73,7 @@ git clone https://github.com/yourusername/football-matches-analysis.git
 cd football-matches-analysis
 
 ### 2️⃣  Install dependencies:
-```bash
 pip install -r requirements.txt
 
 ### 3️⃣ Run the analysis:
-```bash
 python main.py
