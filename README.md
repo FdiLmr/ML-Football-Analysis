@@ -5,7 +5,10 @@ This repository contains a deep learning-based system for analyzing **indoor foo
 The project **tracks players, estimates ball possession, assigns team colors, calculates player speed & distance, and generates an annotated video** with all this information visualized.
 
 🎥 **Example Output:**
-[Watch the video](https://raw.githubusercontent.com/FdiLmr/ML-Football-Analysis/main/examples/output.avi)
+[![Watch the video]
+(https://raw.githubusercontent.com/FdiLmr/ML-Football-Analysis/main/examples/output.png)]
+(https://raw.githubusercontent.com/FdiLmr/ML-Football-Analysis/main/examples/output.avi)
+
 
 ---
 
