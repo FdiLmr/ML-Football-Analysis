@@ -9,6 +9,18 @@ The project **tracks players, estimates ball possession, assigns team colors, ca
 
 ---
 
+## 🚧 Work in Progress
+This project is **actively being improved**! Here’s what’s coming next:
+
+- **⚽ Enhanced Ball Detection:** The current model will be refined for better ball tracking accuracy.
+- **🛠 More Functionalities:** Future updates will include automatic event detection (goals, assists, tackles, etc.).
+- **🎨 UI Improvements:** A more polished visualization with better overlays and real-time analytics.
+- **☁️ Cloud Processing:** A potential web-based platform to analyze matches without local setup.
+
+Contributions & feedback are welcome! 🚀
+
+---
+
 ## 🚀 Project Overview
 
 This project implements a **video processing pipeline** that **detects, tracks, and analyzes** objects in an indoor football match. Below are the main steps:
