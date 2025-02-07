@@ -58,7 +58,7 @@ class Tracker:
         detections = self.detect_frames(frames)
         
         tracks = {
-            "players":[],       
+            "persons":[],       
             "referees":[],
             "ball":[]
         }
@@ -71,15 +71,15 @@ class Tracker:
             #Convert to supervision Detection format
             detection_supervision = sv.Detections.from_ultralytics(detection)
             
-            #Convert Goalkeeper to Player object
+            #Convert Goalkeeper to person object
             for object_ind, class_id in enumerate(detection_supervision.class_id):
                 if cls_names[class_id] == "goalkeeper":
-                    detection_supervision.class_id[object_ind] = cls_names_inv["player"]
+                    detection_supervision.class_id[object_ind] = cls_names_inv["person"]
                     
             #Track Objects
             detection_with_tracks = self.tracker.update_with_detections(detection_supervision)
             
-            tracks["players"].append({})
+            tracks["persons"].append({})
             tracks["referees"].append({})
             tracks["ball"].append({})
             
@@ -88,11 +88,11 @@ class Tracker:
                 cls_id = frame_detection[3]
                 track_id = frame_detection[4]
                 
-                if cls_id == cls_names_inv['player']:
-                    tracks["players"][frame_num][track_id] = {"bbox":bbox}
+                if cls_id == cls_names_inv['person']:
+                    tracks["persons"][frame_num][track_id] = {"bbox":bbox}
                 
-                if cls_id == cls_names_inv['referee']:
-                    tracks["referees"][frame_num][track_id] = {"bbox":bbox}
+                #if cls_id == cls_names_inv['referee']:
+                    #tracks["referees"][frame_num][track_id] = {"bbox":bbox}
                     
             for frame_detection in detection_supervision:
                 bbox = frame_detection[0].tolist()
@@ -110,52 +110,51 @@ class Tracker:
         return tracks
 
 
-    def draw_ellipse(self,frame,bbox,color,track_id=None):
+    def draw_ellipse(self, frame, bbox, color, track_id=None):
         y2 = int(bbox[3])
         x_center, _ = get_center_of_bbox(bbox)
         width = get_bbox_width(bbox)
 
+        # Draw an improved ellipse
         cv2.ellipse(
             frame,
-            center=(x_center,y2),
-            axes=(int(width), int(0.35*width)),
+            center=(x_center, y2),
+            axes=(int(width), int(0.35 * width)),
             angle=0.0,
             startAngle=-45,
             endAngle=235,
-            color = color,
+            color=color,
             thickness=2,
-            lineType=cv2.LINE_4
+            lineType=cv2.LINE_AA  # Anti-aliased lines for smoothness
         )
-        
-        rectangle_width = 40
-        rectangle_height = 20
-        x1_rect = x_center - rectangle_width//2
-        x2_rect = x_center + rectangle_width//2
-        y1_rect = (y2- rectangle_height//2) +15
-        y2_rect = (y2+ rectangle_height//2) +15
-        
+
+        # Define rectangle dimensions
+        rectangle_width = 24
+        rectangle_height = 14
+        x1_rect = x_center - rectangle_width // 2
+        x2_rect = x_center + rectangle_width // 2
+        y1_rect = y2 + 15 - rectangle_height // 2
+        y2_rect = y2 + 15 + rectangle_height // 2
+
         if track_id is not None:
-            cv2.rectangle(frame,
-                          (int(x1_rect),int(y1_rect) ),
-                          (int(x2_rect),int(y2_rect)),
-                          color,
-                          cv2.FILLED)
-            
-            x1_text = x1_rect+12
-            if track_id > 99:
-                x1_text -=10
-            
-            cv2.putText(
-                frame,
-                f"{track_id}",
-                (int(x1_text),int(y1_rect+15)),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.6,
-                (0,0,0),
-                2
-            )
-        
+            # Draw a rectangle with better contrast
+            cv2.rectangle(frame, (x1_rect, y1_rect), (x2_rect, y2_rect), color, cv2.FILLED)
+
+            # Improve text positioning and visibility
+            text = f"{track_id}"
+            font_scale = 0.4  # Adjusted font size
+            font_thickness = 1
+            font = cv2.FONT_HERSHEY_DUPLEX
+            text_size = cv2.getTextSize(text, font, font_scale, font_thickness)[0]
+            text_x = x_center - text_size[0] // 2  # Center the text horizontally
+            text_y = y1_rect + (rectangle_height // 2) + (text_size[1] // 2)  # Adjust vertically
+
+            # Add a text outline for better contrast
+            cv2.putText(frame, text, (text_x, text_y), font, font_scale, (0, 0, 0), font_thickness + 2, cv2.LINE_AA)  # Outline
+            cv2.putText(frame, text, (text_x, text_y), font, font_scale, (255, 255, 255), font_thickness, cv2.LINE_AA)  # Main text
+
         return frame
+
     
     def draw_triangle(self,frame,bbox,color):
         y= int(bbox[1])
@@ -190,35 +189,37 @@ class Tracker:
         
         return frame
         
-    def draw_annotations(self,video_frames, tracks, team_ball_control):
-        output_video_frames= []
+    def draw_annotations(self, video_frames, tracks, team_ball_control):
+        output_video_frames = []
+        num_tracked_frames = len(tracks["persons"])  # Get the length of tracking data
+
         for frame_num, frame in enumerate(video_frames):
+            if frame_num >= num_tracked_frames:
+                print(f"Skipping frame {frame_num} as there is no tracking data available.")
+                break  # Exit the loop when tracking data ends
+
             frame = frame.copy()
 
-            player_dict = tracks["players"][frame_num]
+            person_dict = tracks["persons"][frame_num]
             ball_dict = tracks["ball"][frame_num]
-            referee_dict = tracks["referees"][frame_num]
+            #referee_dict = tracks["referees"][frame_num]
 
-            # Draw Players
-            for track_id, player in player_dict.items():
-                color = player.get("team_color",(0,0,255))
-                frame = self.draw_ellipse(frame, player["bbox"], color, track_id)
-                
-                if player.get('has_ball',False):
-                    frame = self.draw_triangle(frame, player["bbox"],(0,0,255))
-                
-            # Draw Referee
-            for _, referee in referee_dict.items():
-                frame = self.draw_ellipse(frame, referee["bbox"],(0,255,255))
-                
+            # Draw persons
+            for track_id, person in person_dict.items():
+                color = person.get("team_color", (0, 0, 255))
+                frame = self.draw_ellipse(frame, person["bbox"], color, track_id)
+
+                if person.get('has_ball', False):
+                    frame = self.draw_triangle(frame, person["bbox"], (0, 0, 255))
+
             # Draw Ball
             for track_id, ball in ball_dict.items():
-                frame = self.draw_triangle(frame, ball["bbox"],(0,255,0))
-                
+                frame = self.draw_triangle(frame, ball["bbox"], (0, 255, 0))
+
             # Draw Team Ball Control
-            frame = self.draw_team_ball_control(frame, frame_num, team_ball_control)
+            if frame_num < len(team_ball_control):  # Ensure team_ball_control is available
+                frame = self.draw_team_ball_control(frame, frame_num, team_ball_control)
 
             output_video_frames.append(frame)
-                            
-            
+
         return output_video_frames
